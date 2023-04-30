@@ -2,6 +2,7 @@ const express = require('express')
 const mongoose = require('mongoose')
 const coreteamsModel = require('./models/coreteamsModel')
 const subcoreteamsModel = require('./models/subcoreteamsModel')
+const currentEvent = require('./models/currentEvent')
 const app = express()
 require('dotenv').config();
 var port = process.env.PORT || 3000;
@@ -32,9 +33,10 @@ app.get('/', (req, res) => {
     res.send("Welcome to Shastra Coding Club")
 })
 
+/*******************Members Section*********************/
 
 // Add core members
-app.post('/addcoreteamMember', async(req, res) => {
+app.post('/addCoreteamMember', async(req, res) => {
     try {
         const member = await coreteamsModel.create(req.body)
         res.status(200).json(member)
@@ -45,7 +47,7 @@ app.post('/addcoreteamMember', async(req, res) => {
 })
 
 // Add subcore members
-app.post('/addsubcoreteamMember', async(req, res) => {
+app.post('/addSubcoreteamMember', async(req, res) => {
     try {
         const member = await subcoreteamsModel.create(req.body)
         res.status(200).json(member)
@@ -99,7 +101,7 @@ app.get('/subcoreMember/:id', async(req, res) => {
 
 
 // Update core members
-app.put('/coreMembers/:id', async(req, res) => {
+app.put('/updateCoreMember/:id', async(req, res) => {
     try {
         const {id} = req.params;
         const member = await coreteamsModel.findByIdAndUpdate(id, req.body);
@@ -116,7 +118,7 @@ app.put('/coreMembers/:id', async(req, res) => {
 })
 
 // Update subcore members
-app.put('/subcoreMembers/:id', async(req, res) => {
+app.put('/updateSubCoreMember/:id', async(req, res) => {
     try {
         const {id} = req.params;
         const member = await subcoreteamsModel.findByIdAndUpdate(id, req.body);
@@ -133,7 +135,7 @@ app.put('/subcoreMembers/:id', async(req, res) => {
 })
 
 // Delete core Member
-app.delete('/coreMember/:id', async(req, res) =>{
+app.delete('/deleteCoreMember/:id', async(req, res) =>{
     try {
         const {id} = req.params;
         const member = await coreteamsModel.findByIdAndDelete(id);
@@ -148,7 +150,7 @@ app.delete('/coreMember/:id', async(req, res) =>{
 })
 
 // Delete Subcore member
-app.delete('/subcoreMember/:id', async(req, res) =>{
+app.delete('/deleteSubcoreMember/:id', async(req, res) =>{
     try {
         const {id} = req.params;
         const member = await subcoreteamsModel.findByIdAndDelete(id);
@@ -157,6 +159,40 @@ app.delete('/subcoreMember/:id', async(req, res) =>{
         }
         res.status(200).json(member);
         
+    } catch (error) {
+        res.status(500).json({message: error.message})
+    }
+})
+
+/*******************Event Section*********************/
+
+// Add event
+app.post('/addEvent', async(req, res) => {
+    try {
+        const event = await currentEvent.create(req.body)
+        res.status(200).json(event)
+    } catch (error) {
+        console.log(error.message);
+        res.status(500).json({message: error.message})
+    }
+})
+
+
+// Get Event
+app.get('/events', async(req, res) => {
+    try {
+        const events = await currentEvent.find({});
+        res.status(200).json(events);
+    } catch (error) {
+        res.status(500).json({message: error.message})
+    }
+})
+
+app.get('/event/:id', async(req, res) => {
+    try {
+        const {id} = req.params;
+        const event = await currentEvent.findById(id);
+        res.status(200).json(event);
     } catch (error) {
         res.status(500).json({message: error.message})
     }
