@@ -4,7 +4,9 @@ const coreteamsModel = require('./models/coreteamsModel')
 const subcoreteamsModel = require('./models/subcoreteamsModel')
 const app = express()
 require('dotenv').config();
+var port = process.env.PORT || 3000;
 
+app.listen(port, '0.0.0.0');
 app.use(express.json())
 app.use(express.urlencoded({extended: false}))
 
