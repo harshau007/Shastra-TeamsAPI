@@ -4,9 +4,9 @@ const coreteamsModel = require('./models/coreteamsModel')
 const subcoreteamsModel = require('./models/subcoreteamsModel')
 const app = express()
 require('dotenv').config();
-var port = process.env.PORT || 3000;
+// var port = process.env.PORT || 3000;
 
-app.listen(port, '0.0.0.0');
+// app.listen(port, '0.0.0.0');
 app.use(express.json())
 app.use(express.urlencoded({extended: false}))
 
@@ -92,6 +92,71 @@ app.get('/subcoreMember/:id', async(req, res) => {
         const {id} = req.params;
         const subcoreMember = await subcoreteamsModel.findById(id);
         res.status(200).json(subcoreMember);
+    } catch (error) {
+        res.status(500).json({message: error.message})
+    }
+})
+
+
+// Update core members
+app.put('/coreMembers/:id', async(req, res) => {
+    try {
+        const {id} = req.params;
+        const member = await coreteamsModel.findByIdAndUpdate(id, req.body);
+        // we cannot find any product in database
+        if(!member){
+            return res.status(404).json({message: `cannot find any Member with ID ${id}`})
+        }
+        const updatedMember = await coreteamsModel.findById(id);
+        res.status(200).json(updatedMember);
+        
+    } catch (error) {
+        res.status(500).json({message: error.message})
+    }
+})
+
+// Update subcore members
+app.put('/subcoreMembers/:id', async(req, res) => {
+    try {
+        const {id} = req.params;
+        const member = await subcoreteamsModel.findByIdAndUpdate(id, req.body);
+        // we cannot find any product in database
+        if(!member){
+            return res.status(404).json({message: `cannot find any Member with ID ${id}`})
+        }
+        const updatedMember = await subcoreteamsModel.findById(id);
+        res.status(200).json(updatedMember);
+        
+    } catch (error) {
+        res.status(500).json({message: error.message})
+    }
+})
+
+// Delete core Member
+app.delete('/coreMember/:id', async(req, res) =>{
+    try {
+        const {id} = req.params;
+        const member = await coreteamsModel.findByIdAndDelete(id);
+        if(!member){
+            return res.status(404).json({message: `cannot find any product with ID ${id}`})
+        }
+        res.status(200).json(member);
+        
+    } catch (error) {
+        res.status(500).json({message: error.message})
+    }
+})
+
+// Delete Subcore member
+app.delete('/subcoreMember/:id', async(req, res) =>{
+    try {
+        const {id} = req.params;
+        const member = await subcoreteamsModel.findByIdAndDelete(id);
+        if(!member){
+            return res.status(404).json({message: `cannot find any product with ID ${id}`})
+        }
+        res.status(200).json(member);
+        
     } catch (error) {
         res.status(500).json({message: error.message})
     }
