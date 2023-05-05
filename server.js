@@ -9,8 +9,7 @@ var port = process.env.PORT || 3000;
 
 app.listen(port, '0.0.0.0');
 app.use(express.json())
-app.use(express.urlencoded({ extended: false }))
-app.use(cors({ origin: true, credentials: true }));
+app.use(express.urlencoded({ extended: false }));
 
 app.get('/teams', (req, res) => {
     res.send("Welcome to Shastra Coding Club's Team Section")
