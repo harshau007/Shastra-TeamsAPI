@@ -3,6 +3,7 @@ const mongoose = require('mongoose')
 const coreteamsModel = require('./models/coreteamsModel')
 const subcoreteamsModel = require('./models/subcoreteamsModel')
 const currentEvent = require('./models/currentEvent')
+const cors = require('cors');
 const app = express()
 require('dotenv').config();
 var port = process.env.PORT || 3000;
@@ -10,6 +11,7 @@ var port = process.env.PORT || 3000;
 app.listen(port, '0.0.0.0');
 app.use(express.json())
 app.use(express.urlencoded({ extended: false }));
+app.use(cors());
 
 app.get('/teams', (req, res) => {
     res.send("Welcome to Shastra Coding Club's Team Section")
