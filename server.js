@@ -3,6 +3,7 @@ const mongoose = require('mongoose')
 const coreteamsModel = require('./models/coreteamsModel')
 const subcoreteamsModel = require('./models/subcoreteamsModel')
 const currentEvent = require('./models/currentEvent')
+const carousel = require('./models/carousel');
 const cors = require('cors');
 const app = express()
 require('dotenv').config();
@@ -142,7 +143,7 @@ app.delete('/deleteCoreMember/:id', async (req, res) => {
         const { id } = req.params;
         const member = await coreteamsModel.findByIdAndDelete(id);
         if (!member) {
-            return res.status(404).json({ message: `cannot find any product with ID ${id}` })
+            return res.status(404).json({ message: `cannot find any member with ID ${id}` })
         }
         res.status(200).json(member);
 
@@ -157,7 +158,7 @@ app.delete('/deleteSubcoreMember/:id', async (req, res) => {
         const { id } = req.params;
         const member = await subcoreteamsModel.findByIdAndDelete(id);
         if (!member) {
-            return res.status(404).json({ message: `cannot find any product with ID ${id}` })
+            return res.status(404).json({ message: `cannot find any member with ID ${id}` })
         }
         res.status(200).json(member);
 
@@ -195,6 +196,72 @@ app.get('/event/:id', async (req, res) => {
         const { id } = req.params;
         const event = await currentEvent.findById(id);
         res.status(200).json(event);
+    } catch (error) {
+        res.status(500).json({ message: error.message })
+    }
+})
+
+
+/********************Carousel********************/
+
+// Add carousel members
+app.post('/addCarousel', async (req, res) => {
+    try {
+        const Carousel = await carousel.create(req.body)
+        res.status(200).json(Carousel)
+    } catch (error) {
+        console.log(error.message);
+        res.status(500).json({ message: error.message })
+    }
+})
+
+// Update carousel members
+app.put('/updateCarousel/:id', async (req, res) => {
+    try {
+        const { id } = req.params;
+        const Carousel = await carousel.findByIdAndUpdate(id, req.body);
+        // we cannot find any product in database
+        if (!Carousel) {
+            return res.status(404).json({ message: `cannot find any Carousel with ID ${id}` })
+        }
+        const updateCarousel = await carousel.findById(id);
+        res.status(200).json(updateCarousel);
+
+    } catch (error) {
+        res.status(500).json({ message: error.message })
+    }
+})
+
+// Delete Carousel member
+app.delete('/deleteCarousel/:id', async (req, res) => {
+    try {
+        const { id } = req.params;
+        const Carousel = await carousel.findByIdAndDelete(id);
+        if (!Carousel) {
+            return res.status(404).json({ message: `cannot find any carousel with ID ${id}` })
+        }
+        res.status(200).json(Carousel);
+
+    } catch (error) {
+        res.status(500).json({ message: error.message })
+    }
+})
+
+// Get carousel
+app.get('/carousel', async (req, res) => {
+    try {
+        const Carousel = await carousel.find({});
+        res.status(200).json(Carousel);
+    } catch (error) {
+        res.status(500).json({ message: error.message })
+    }
+})
+
+app.get('/carousel/:id', async (req, res) => {
+    try {
+        const { id } = req.params;
+        const Carousel = await carousel.findById(id);
+        res.status(200).json(Carousel);
     } catch (error) {
         res.status(500).json({ message: error.message })
     }
