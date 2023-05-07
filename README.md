@@ -4,10 +4,10 @@
 
 
 
+
 ## Live Demo
 
-https://shastra-teamsapi-production.up.railway.app
-
+https://shastra-api.onrender.com
 
 ## Deployment
 

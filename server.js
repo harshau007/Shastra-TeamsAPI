@@ -3,7 +3,6 @@ const mongoose = require('mongoose')
 const coreteamsModel = require('./models/coreteamsModel')
 const subcoreteamsModel = require('./models/subcoreteamsModel')
 const currentEvent = require('./models/currentEvent')
-const carousel = require('./models/carousel');
 const cors = require('cors');
 const app = express()
 require('dotenv').config();
